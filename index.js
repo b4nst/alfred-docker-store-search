@@ -1,69 +1,67 @@
 'use strict';
-const alfy = require('alfy');
 const querystring = require('querystring');
+const alfy = require('alfy');
 const approx = require('approximate-number');
 
+const BASE_URL = 'https://store.docker.com/';
+const SEARCH_API_URL = BASE_URL + 'api/content/v1/products/search?';
+const MAX_RESULTS = 9;
 
-const BASE_URL = "https://store.docker.com/"
-const SEARCH_API_URL = BASE_URL + "api/content/v1/products/search?"
-const MAX_RESULTS = 9
-
-var search_options = {
+var searchOptions = {
 	q: alfy.input,
-	source: "verified",
+	source: 'verified',
 	page: 1,
-	page_size: MAX_RESULTS
+	page_size: MAX_RESULTS // eslint-disable-line camelcase
 };
-var url = SEARCH_API_URL + querystring.stringify(search_options);
+var url = SEARCH_API_URL + querystring.stringify(searchOptions);
 var found = [];
 
 alfy.fetch(url, {
 	transform: body => {
 		return body.summaries;
 	}
-}).then(trusted_images => {
-	if (trusted_images != null) {
-		Array.prototype.push.apply(found, trusted_images);
+}).then(trustedImages => {
+	if (trustedImages !== null) {
+		Array.prototype.push.apply(found, trustedImages);
 	}
 	if (found.length < MAX_RESULTS) {
-		search_options.source = "community";
-		search_options.page_size = MAX_RESULTS - found.length;
-		url = SEARCH_API_URL + querystring.stringify(search_options);
+		searchOptions.source = 'community';
+		searchOptions.page_size = MAX_RESULTS - found.length; // eslint-disable-line camelcase
+		url = SEARCH_API_URL + querystring.stringify(searchOptions);
 		return alfy.fetch(url, {
 			transform: body => {
 				return body.summaries;
 			}
-		})
-	} else {
-		return [];
+		});
 	}
-}).then(community_images => {
-	if (community_images != null) {
-		Array.prototype.push.apply(found, community_images);
+	return [];
+}).then(communityImages => {
+	if (communityImages !== null) {
+		Array.prototype.push.apply(found, communityImages);
 	}
 
 	let items = found.map(image => {
-		var repo = "";
+		var repo = '';
 		var obj = {
 			uid: image.id ? image.id : image.name,
-			type: "default",
+			type: 'default',
 			title: image.name,
-			subtitle: "[" + approx(image.popularity).toUpperCase() + "+] " + image.short_description,
+			subtitle: '[' + approx(image.popularity).toUpperCase() + '+] ' + image.short_description,
 			autocomplete: image.name
 		};
 
 		// Community images
-		if (image.source==="community") {
-			repo = "community/"
+		if (image.source === 'community') {
+			repo = 'community/';
 			obj.icon = {
-				path: "icon_community.png"
-			}
+				path: 'icon_community.png'
+			};
 		}
 
-		obj.arg = BASE_URL + repo + "images/" + image.name;		
+		obj.arg = BASE_URL + repo + 'images/' + image.name;
 
 		return obj;
 	});
 
-	alfy.output(items)
+	alfy.output(items);
 });
