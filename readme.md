@@ -16,6 +16,7 @@ $ npm install --global alfred-docker-store-search
 
 In Alfred, type `dss`, <kbd>Enter</kbd>, and your query.
 
+![Screenshot](screenshot.png?raw=true)
 
 ## License
 

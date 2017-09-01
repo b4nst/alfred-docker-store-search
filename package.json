@@ -7,7 +7,7 @@
   "author": {
     "name": "Bastien Arata",
     "email": "bastien.arata@sigfox.com",
-    "url": "indi.house"
+    "url": "http://indi.house"
   },
   "engines": {
     "node": ">=4"
