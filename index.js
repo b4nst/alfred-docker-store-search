@@ -1,6 +1,8 @@
 'use strict';
 const alfy = require('alfy');
 const querystring = require('querystring');
+const approx = require('approximate-number');
+
 
 const BASE_URL = "https://store.docker.com/"
 const SEARCH_API_URL = BASE_URL + "api/content/v1/products/search?"
@@ -41,17 +43,24 @@ alfy.fetch(url, {
 	}
 
 	let items = found.map(image => {
-		var repo = image.source == "community" ? "community/": "";
-		var image_url = BASE_URL + repo + "images/" + image.name;
-
+		var repo = "";
 		var obj = {
 			uid: image.id ? image.id : image.name,
 			type: "default",
 			title: image.name,
-			subtitle: image.short_description,
-			arg: image_url,
+			subtitle: "[" + approx(image.popularity).toUpperCase() + "+] " + image.short_description,
 			autocomplete: image.name
 		};
+
+		// Community images
+		if (image.source==="community") {
+			repo = "community/"
+			obj.icon = {
+				path: "icon_community.png"
+			}
+		}
+
+		obj.arg = BASE_URL + repo + "images/" + image.name;		
 
 		return obj;
 	});

@@ -28,7 +28,8 @@
     "alfy"
   ],
   "dependencies": {
-    "alfy": "^0.6.0"
+    "alfy": "^0.6.0",
+    "approximate-number": "^2.0.0"
   },
   "devDependencies": {
     "alfy-test": "^0.3.0",
