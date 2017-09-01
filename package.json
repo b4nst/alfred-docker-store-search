@@ -1,0 +1,38 @@
+{
+  "name": "alfred-docker-store-search",
+  "version": "0.0.0",
+  "description": "Search from store.docker.com",
+  "license": "MIT",
+  "repository": "BastienAr/alfred-docker-store-search",
+  "author": {
+    "name": "Bastien Arata",
+    "email": "bastien.arata@sigfox.com",
+    "url": "indi.house"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "test": "xo && ava",
+    "postinstall": "alfy-init",
+    "preuninstall": "alfy-cleanup"
+  },
+  "files": [
+    "index.js",
+    "icon.png",
+    "info.plist"
+  ],
+  "keywords": [
+    "alfred",
+    "workflow",
+    "alfy"
+  ],
+  "dependencies": {
+    "alfy": "^0.6.0"
+  },
+  "devDependencies": {
+    "alfy-test": "^0.3.0",
+    "ava": "^0.18.0",
+    "xo": "^0.17.0"
+  }
+}
